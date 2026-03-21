@@ -32,3 +32,10 @@ input[type="file"] {
   padding: 0.3rem;
   border-radius: 4px;
 }
+
+.react-flow__node {
+  max-width: 150px;
+  white-space: normal;
+  word-break: break-word;
+  overflow: hidden;
+}

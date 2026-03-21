@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactFlow, { Background, Controls } from 'reactflow';
-import 'reactflow/dist/style.css';
+import React from "react";
+import ReactFlow, { Background, Controls } from "reactflow";
+import "reactflow/dist/style.css";
 
 type Props = {
   nodes: any[];
@@ -9,7 +9,7 @@ type Props = {
 
 const Graph: React.FC<Props> = ({ nodes, edges }) => {
   return (
-    <div style={{ height: '500px', marginTop: '2rem' }}>
+    <div style={{ height: "500px", marginTop: "2rem" }}>
       <ReactFlow nodes={nodes} edges={edges}>
         <Background />
         <Controls />

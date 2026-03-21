@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { FileNode, parseCode } from "../parser/parseRepo";
 import JSZip from "jszip";
 
-const FileUpload: React.FC = () => {
+type Props = {
+  onParsed: (files: FileNode[]) => void;
+};
+
+const FileUpload: React.FC<Props> = ({ onParsed }) => {
   const [file, setFile] = useState<File | null> (null);
   const [parsedFiles, setParsedFiles] = useState<FileNode[]> ([]);
 
@@ -30,8 +34,8 @@ const FileUpload: React.FC = () => {
       );
 
       setParsedFiles(results);
+      onParsed(results);
 
-      console.log("Parsed Files: ", results);
     } else {
         const reader = new FileReader();
         
@@ -40,6 +44,7 @@ const FileUpload: React.FC = () => {
           const result = parseCode(file.name, code);
 
           setParsedFiles([result]);
+          onParsed([result]);
           
           console.log("Parsed: ", result);
         };
