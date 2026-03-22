@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 
 import FileUpload from './components/FileUpload';
+import Sidebar from './components/Sidebar';
 import Graph from './components/Graph';
 import { buildDependencyGraph } from './parser/buildGraph';
 import { transformToReactFlow } from './parser/transformGraph';
 import { FileNode } from './parser/parseRepo';
-
 import './App.css';
 
 function App() {
   const [graphData, setGraphData] = useState<any> (null);
+  const [parsedFiles, setParsedFiles] = useState<FileNode[]> ([]);
 
   const handleParsedFiles = (files: FileNode[]) => {
+    setParsedFiles(files);
+
     const graph = buildDependencyGraph(files);
     const transformed = transformToReactFlow(graph);
     
@@ -19,13 +22,21 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1> Codebase Explorer</h1>
-      <FileUpload onParsed={handleParsedFiles} />
+    <div style={{ height: "100vh", display: "flex" }}>
+      {/* Sidebar */}
+      <div style={{ width: "300px", borderRight: "1px solid #333", padding: "1rem" }}>
+        <Sidebar files={parsedFiles} />
+      </div>
 
-      {graphData && (
-        <Graph nodes={graphData.nodes} edges={graphData.edges} />
-      )}
+      {/* Main Content */}
+      <div style={{ flex: 1, padding: "2rem" }}>
+        <h1>Codebase Explorer</h1>
+        <FileUpload onParsed={handleParsedFiles} />
+
+        {graphData && (
+          <Graph nodes={graphData.nodes} edges={graphData.edges} />
+        )}
+      </div>
     </div>
   );
 }

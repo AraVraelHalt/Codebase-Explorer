@@ -8,7 +8,6 @@ type Props = {
 
 const FileUpload: React.FC<Props> = ({ onParsed }) => {
   const [file, setFile] = useState<File | null> (null);
-  const [parsedFiles, setParsedFiles] = useState<FileNode[]> ([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -33,7 +32,6 @@ const FileUpload: React.FC<Props> = ({ onParsed }) => {
         })
       );
 
-      setParsedFiles(results);
       onParsed(results);
 
     } else {
@@ -43,7 +41,6 @@ const FileUpload: React.FC<Props> = ({ onParsed }) => {
           const code = e.target?.result as string;
           const result = parseCode(file.name, code);
 
-          setParsedFiles([result]);
           onParsed([result]);
           
           console.log("Parsed: ", result);
@@ -61,20 +58,6 @@ const FileUpload: React.FC<Props> = ({ onParsed }) => {
       </button>
 
       {file && <p>Selected file: {file.name}</p>}
-
-      {parsedFiles.length > 0 && (
-        <div>
-          <h3>Parsed Files: </h3>
-          
-          {parsedFiles.map((pf: FileNode) => (
-            <div key={pf.name}>
-              <strong>{pf.name}</strong>
-              <p>Functions: {pf.functions.join(", ")}</p>
-              <p>Imports: {pf.imports.join(", ")}</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
