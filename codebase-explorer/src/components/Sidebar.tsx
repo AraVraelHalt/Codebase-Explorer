@@ -10,14 +10,17 @@ const Sidebar: React.FC<Props> = ({ files }) => {
 
   return (
     <div>
-      <h3>Files</h3>
+      <h3>File Panel</h3>
 
       {/* File buttons */}
       {files.map((file) => (
         <div key={file.name} style={{ marginBottom: "0.5rem" }}>
         <button
           onClick={() => setSelectedFile(selectedFile?.name === file.name ? null : file)}
-          style={{ display: "block", width: "100%" }}
+          style={{ 
+            display: 'block', 
+            width: '100%',
+          }}
         >
           {file.name}
         </button>
