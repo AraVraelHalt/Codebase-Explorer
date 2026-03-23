@@ -19,24 +19,49 @@ const Graph: React.FC<Props> = ({ nodes, edges, activeNodeId, setActiveNodeId })
     const currentId = highlightedNodeId || activeNodeId;
 
     const updatedEdges = edges.map((edge) => {
-      const isConnected =
-        edge.source === currentId || edge.target === currentId;
+      const isOutgoing = edge.source === currentId;
+      const isIncoming = edge.target === currentId;
+
+      const type = isOutgoing
+        ? 'outgoing'
+        : isIncoming
+        ? 'incoming'
+        : 'default';
+
+      const styles = {
+        outgoing: {
+          stroke: 'yellow',
+          glow: 'yellow',
+          width: 2,
+          opacity: 1,
+        },
+        incoming: {
+          stroke: '#4da6ff',
+          glow: '#4da6ff',
+          width: 2,
+          opacity: 1,
+        },
+        default: {
+          stroke: '#888',
+          glow: '#888',
+          width: 1,
+          opacity: 0.4,
+        },
+      };
+
+      const s = styles[type];
 
       return {
         ...edge,
-        style: isConnected
-          ? {
-              stroke: 'yellow',
-              strokeWidth: 2,
-              filter: 'drop-shadow(0 0 6px yellow)',
-            }
-          : {
-              stroke: '#888',
-              strokeWidth: 1,
-            },
+        style: {
+          stroke: s.stroke,
+          strokeWidth: s.width,
+          opacity: s.opacity,
+          filter: `drop-shadow(0 0 6px ${s.glow})`,
+        },
         markerEnd: {
           type: 'arrowclosed',
-          color: isConnected ? 'yellow' : '#888',
+          color: s.stroke,
         },
       };
     });
