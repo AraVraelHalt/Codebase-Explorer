@@ -1,3 +1,5 @@
+import { MarkerType } from 'reactflow';
+
 import { Graph } from './buildGraph';
 import dagre from 'dagre';
 
@@ -43,6 +45,10 @@ export function transformToReactFlow(graph: Graph) {
       id: `${edge.from}-${edge.to}-${edge.index}`,
       source: edge.from,
       target: edge.to,
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: '#888',
+      },
     }));
 
   const dagreGraph = new dagre.graphlib.Graph();

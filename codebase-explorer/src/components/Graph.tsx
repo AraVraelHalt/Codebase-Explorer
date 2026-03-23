@@ -34,6 +34,10 @@ const Graph: React.FC<Props> = ({ nodes, edges, activeNodeId, setActiveNodeId })
               stroke: '#888',
               strokeWidth: 1,
             },
+        markerEnd: {
+          type: 'arrowclosed',
+          color: isConnected ? 'yellow' : '#888',
+        },
       };
     });
 
