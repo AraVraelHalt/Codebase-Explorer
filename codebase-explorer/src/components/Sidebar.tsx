@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { FileNode } from "../parser/parseRepo";
 
 type Props = {
   files: FileNode[];
+  activeNodeId: string | null;
+  setActiveNodeId: (id: string | null) => void;
 };
 
-const Sidebar: React.FC<Props> = ({ files }) => {
-  const [selectedFile, setSelectedFile] = useState<FileNode | null>(null);
+const Sidebar: React.FC<Props> = ({ files, activeNodeId, setActiveNodeId }) => {
 
   return (
     <div>
@@ -16,16 +17,17 @@ const Sidebar: React.FC<Props> = ({ files }) => {
       {files.map((file) => (
         <div key={file.name} style={{ marginBottom: "0.5rem" }}>
         <button
-          onClick={() => setSelectedFile(selectedFile?.name === file.name ? null : file)}
+          onClick={() => setActiveNodeId(activeNodeId === file.name ? null : file.name)}
           style={{ 
             display: 'block', 
             width: '100%',
+            backgroundColor: activeNodeId === file.name ? '#333' : undefined,
           }}
         >
           {file.name}
         </button>
 
-        {selectedFile?.name === file.name && (
+        {activeNodeId === file.name && (
           <div style={{ marginLeft: "1rem", marginTop: "0.25rem" }}>
             <p>Functions: {file.functions.join(", ")}</p>
             <p>Imports: {file.imports.join(", ")}</p>

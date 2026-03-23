@@ -13,6 +13,7 @@ import './components/Sidebar.css'
 function App() {
   const [graphData, setGraphData] = useState<any> (null);
   const [parsedFiles, setParsedFiles] = useState<FileNode[]> ([]);
+  const [activeNodeId, setActiveNodeId] = useState<string | null> (null);
 
   const handleParsedFiles = (files: FileNode[]) => {
     setParsedFiles(files);
@@ -27,7 +28,11 @@ function App() {
     <div style={{ height: "100vh", display: "flex" }}>
       {/* Sidebar */}
       <div style={{ width: "300px", borderRight: "1px solid #333", padding: "1rem" }}>
-        <Sidebar files={parsedFiles} />
+        <Sidebar 
+        files={parsedFiles} 
+        activeNodeId={activeNodeId}
+        setActiveNodeId={setActiveNodeId}
+        />
       </div>
 
       {/* Main Content */}
@@ -36,7 +41,12 @@ function App() {
         <FileUpload onParsed={handleParsedFiles} />
 
         {graphData && (
-          <Graph nodes={graphData.nodes} edges={graphData.edges} />
+          <Graph 
+          nodes={graphData.nodes} 
+          edges={graphData.edges}
+          activeNodeId={activeNodeId}
+          setActiveNodeId={setActiveNodeId}
+          />
         )}
       </div>
     </div>

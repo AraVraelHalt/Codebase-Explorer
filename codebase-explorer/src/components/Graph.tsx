@@ -5,18 +5,22 @@ import "reactflow/dist/style.css";
 type Props = {
   nodes: any[];
   edges: any[];
+  activeNodeId: string | null;
+  setActiveNodeId: (id: string | null) => void;
 };
 
-const Graph: React.FC<Props> = ({ nodes, edges }) => {
+const Graph: React.FC<Props> = ({ nodes, edges, activeNodeId, setActiveNodeId }) => {
   const [rfNodes, , onNodesChange] = useNodesState(nodes);
   const [rfEdges, setRfEdges, onEdgesChange] = useEdgesState(edges);
-  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
+  const [highlightedNodeId, setHighlightedNodeId] = useState<string | null> (null);
 
   // Update edge ? active node changes
   useEffect(() => {
+    const currentId = highlightedNodeId || activeNodeId;
+
     const updatedEdges = edges.map((edge) => {
       const isConnected =
-        edge.source === activeNodeId || edge.target === activeNodeId;
+        edge.source === currentId || edge.target === currentId;
 
       return {
         ...edge,
@@ -34,7 +38,7 @@ const Graph: React.FC<Props> = ({ nodes, edges }) => {
     });
 
     setRfEdges(updatedEdges);
-  }, [activeNodeId, edges, setRfEdges]);
+  }, [highlightedNodeId, activeNodeId, edges, setRfEdges]);
 
   return (
     <div style={{ height: '500px', marginTop: '2rem' }}>
@@ -43,9 +47,9 @@ const Graph: React.FC<Props> = ({ nodes, edges }) => {
       edges={rfEdges} 
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
-      onNodeClick={(_, node) => setActiveNodeId(node.id)}
-      onNodeDragStart={(_, node) => setActiveNodeId(node.id)}
-      onPaneClick={() => setActiveNodeId(null)} // resest
+      onNodeClick={(_, node) => setHighlightedNodeId(node.id)}
+      onNodeDragStart={(_, node) => setHighlightedNodeId(node.id)}
+      onPaneClick={() => setHighlightedNodeId(null)} // resest
       >
         <Background />
         <Controls />
