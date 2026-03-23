@@ -10,7 +10,7 @@ Visualize your JavaScript and TypeScript codebases as interactive graphs, showin
 ## 🚀 Features
 
 - Visualize files as **draggable nodes** in a graph  
-- Highlight **imports and dependencies** with glowing edges  
+- Color-coded **imports and dependencies** with glowing directional edges
 - **Sidebar file panel** with functions and imports details  
 - Click sidebar file → highlights edges and expands info  
 - Click graph node → highlights edges only  
@@ -31,9 +31,10 @@ Visualize your JavaScript and TypeScript codebases as interactive graphs, showin
 - Custom parsing logic for functions and imports  
 
 **Styling & UX:**  
-- Dark theme with edge highlighting  
+- Dark theme with edge highlights
+- Directional arrows between nodes
 - Sidebar file expansion and toggles  
-- Edge glow using dynamic styles  
+- Edge glow using dynamic styles and color-code 
 
 ---
 
@@ -64,8 +65,9 @@ npm start
   - Click a file to expand its details (functions and imports)  
   - Highlights connected edges in the graph  
 - **Graph nodes:**  
-  - Click a node to highlight edges only  
-  - Does **not** expand sidebar info, keeping exploration and inspection separate  
+  - Click a node to highlight edges (to and from the node) 
+  - Does **not** expand sidebar info, keeping exploration and inspection separate
+  - Directional edges to better differentiate between imports and dependencies
 
 ---
 
