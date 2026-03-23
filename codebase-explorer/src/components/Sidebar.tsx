@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FileNode } from "../parser/parseRepo";
 
 type Props = {
@@ -8,6 +8,8 @@ type Props = {
 };
 
 const Sidebar: React.FC<Props> = ({ files, activeNodeId, setActiveNodeId }) => {
+  const [showFunctions, setShowFunctions] = useState(false);
+  const [showImports, setShowImports] = useState(false);
 
   return (
     <div>
@@ -28,9 +30,41 @@ const Sidebar: React.FC<Props> = ({ files, activeNodeId, setActiveNodeId }) => {
         </button>
 
         {activeNodeId === file.name && (
-          <div style={{ marginLeft: "1rem", marginTop: "0.25rem" }}>
-            <p>Functions: {file.functions.join(", ")}</p>
-            <p>Imports: {file.imports.join(", ")}</p>
+          <div style={{ marginLeft: '1rem', marginTop: '0.25rem' }}>
+
+            <div style={{ marginBottom: "0.5rem", textAlign: "left" }}>
+              <div
+                onClick={() => setShowFunctions(!showFunctions)}
+                style={{ cursor: "pointer", fontWeight: "bold" }}
+              >
+                {showFunctions ? "▼" : "▶"} Functions ({file.functions.length})
+              </div>
+
+              {showFunctions && (
+                <ul style={{ margin: "0.25rem 0 0 1rem", padding: 0 }}>
+                  {file.functions.map((fn) => (
+                    <li key={fn}>{fn}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div style={{ textAlign: "left" }}>
+              <div
+                onClick={() => setShowImports(!showImports)}
+                style={{ cursor: "pointer", fontWeight: "bold" }}
+              >
+                {showImports ? "▼" : "▶"} Imports ({file.imports.length})
+              </div>
+
+              {showImports && (
+                <ul style={{ margin: "0.25rem 0 0 1rem", padding: 0 }}>
+                  {file.imports.map((imp) => (
+                    <li key={imp}>{imp}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         )}
         </div>
