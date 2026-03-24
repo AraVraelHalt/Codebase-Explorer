@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FileNode } from "../parser/parseRepo";
 
+import './Sidebar.css';
+
 type Props = {
   files: FileNode[];
   activeNodeId: string | null;
@@ -12,7 +14,7 @@ const Sidebar: React.FC<Props> = ({ files, activeNodeId, setActiveNodeId }) => {
   const [showImports, setShowImports] = useState(false);
 
   return (
-    <div>
+    <div className='sidebar-scroll' style={{height: '100vh', overflowY: 'auto', padding: '1rem'}}>
       <h3>File Panel</h3>
 
       {/* File buttons */}

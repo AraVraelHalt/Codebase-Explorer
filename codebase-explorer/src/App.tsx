@@ -8,7 +8,6 @@ import { transformToReactFlow } from './parser/transformGraph';
 import { FileNode } from './parser/parseRepo';
 
 import './App.css';
-import './components/Sidebar.css'
 
 function App() {
   const [graphData, setGraphData] = useState<any> (null);
