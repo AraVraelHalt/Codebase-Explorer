@@ -13,7 +13,8 @@ Visualize your JavaScript and TypeScript codebases as interactive graphs, showin
 - Color-coded **imports and dependencies** with glowing directional edges
 - **Sidebar file panel** with functions and imports details  
 - Click sidebar file → highlights edges and expands info  
-- Click graph node → highlights edges only  
+- Click graph node → highlights edges only 
+- **Search bar** supporting file finding in sidebar panel
 - Supports `.js`, `.jsx`, `.ts`, `.tsx`, and `.zip` uploads  
 - **Hierarchical layout** (top-to-bottom) via Dagre
 
@@ -63,7 +64,10 @@ npm start
 - Drag nodes in the graph to explore file dependencies visually.  
 - **Sidebar file panel:**  
   - Click a file to expand its details (functions and imports)  
-  - Highlights connected edges in the graph  
+  - Highlights connected edges in the graph
+- **Search Bar:**
+  - Filter files by name in side panel
+  - Search includes substring matching
 - **Graph nodes:**  
   - Click a node to highlight edges (to and from the node) 
   - Does **not** expand sidebar info, keeping exploration and inspection separate
