@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-
 import { FileNode } from '../parser/parseRepo';
 import SearchBar from './SearchBar';
-
 import './Sidebar.css';
 
 type Props = {
@@ -13,57 +11,84 @@ type Props = {
   showMetrics: boolean;
 };
 
-const Sidebar: React.FC<Props> = ({ files, weights, activeNodeId, setActiveNodeId, showMetrics}) => {
-  const [showFunctions, setShowFunctions] = useState(false);
-  const [showImports, setShowImports] = useState(false);
-  const [searchQuery, setSearchQuery] = useState<string> ("");
+type ExpandState = {
+  functions: boolean;
+  imports: boolean;
+};
+
+const getFileName = (path: string) => path.split('/').pop()!;
+
+const Sidebar: React.FC<Props> = ({ files, weights, activeNodeId, setActiveNodeId, showMetrics }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [expanded, setExpanded] = useState<Record<string, ExpandState>>({});
+
+  const toggleSection = (fileId: string, section: keyof ExpandState) => {
+    setExpanded((prev) => ({
+      ...prev,
+      [fileId]: {
+        functions: prev[fileId]?.functions || false,
+        imports: prev[fileId]?.imports || false,
+        [section]: !prev[fileId]?.[section],
+      },
+    }));
+  };
 
   return (
-    <div className='sidebar-scroll' style={{height: '100vh', overflowY: 'auto', padding: '1rem'}}>
-      <h3>File Panel</h3>
+    <div className="sidebar-scroll" style={{ height: '100vh', overflowY: 'auto', padding: '1rem' }}>
 
-      {/* Search bar */}
-      <SearchBar query={searchQuery} setQuery={setSearchQuery} />
+      {files.length > 0 && (
+        <>
+          <h3>File Panel</h3>
+          <SearchBar query={searchQuery} setQuery={setSearchQuery} />
+        </>
+      )}
 
-      {/* File buttons */}
       {files
-        .filter(file => file.name.split('/').pop()!.toLowerCase().includes(searchQuery.toLowerCase()))
+        .filter((file) =>
+          getFileName(file.name).toLowerCase().includes(searchQuery.toLowerCase())
+        )
         .map((file) => {
+          const fileName = getFileName(file.name);
+          const isActive = activeNodeId === file.name;
           const weight = weights[file.name] ?? 0;
-          const displayWeight = showMetrics ? `(${weight.toFixed(2)})` : '';
+          const fileState = expanded[file.name] || { functions: false, imports: false };
 
           return (
+
             <div key={file.name} style={{ marginBottom: '0.5rem' }}>
               <button
-                className='file-button'
-                onClick={() => setActiveNodeId(activeNodeId === file.name ? null : file.name)}
-                style={{ 
-                  display: 'flex', 
+                className="file-button"
+                onClick={() =>
+                  setActiveNodeId(isActive ? null : file.name)
+                }
+                style={{
+                  display: 'flex',
                   width: '100%',
-                  backgroundColor: activeNodeId === file.name ? '#333' : undefined,
-                  padding: '0.5rem 1 rem',
+                  backgroundColor: isActive ? '#333' : undefined,
+                  padding: '0.5rem 1rem',
                 }}
               >
-                <span>{file.name.split('/').pop()}</span>
-                {displayWeight && weights[file.name] !== undefined && (
+                <span>{fileName}</span>
+
+                {showMetrics && (
                   <span style={{ marginLeft: 'auto' }}>
-                    {weights[file.name].toFixed(2)}
+                    {weight.toFixed(2)}
                   </span>
                 )}
               </button>
 
-              {activeNodeId === file.name && (
+              {isActive && (
                 <div style={{ marginLeft: '1rem', marginTop: '0.25rem' }}>
-
+                  {/* Functions */}
                   <div style={{ marginBottom: '0.5rem', textAlign: 'left' }}>
                     <div
-                      onClick={() => setShowFunctions(!showFunctions)}
+                      onClick={() => toggleSection(file.name, 'functions')}
                       style={{ cursor: 'pointer', fontWeight: 'bold' }}
                     >
-                      {showFunctions ? '▼' : '▶'} Functions ({file.functions.length})
+                      {fileState.functions ? '▼' : '▶'} Functions ({file.functions.length})
                     </div>
 
-                    {showFunctions && (
+                    {fileState.functions && (
                       <ul style={{ margin: '0.25rem 0 0 1rem', padding: 0 }}>
                         {file.functions.map((fn) => (
                           <li key={fn}>{fn}</li>
@@ -72,15 +97,16 @@ const Sidebar: React.FC<Props> = ({ files, weights, activeNodeId, setActiveNodeI
                     )}
                   </div>
 
+                  {/* Imports */}
                   <div style={{ textAlign: 'left' }}>
                     <div
-                      onClick={() => setShowImports(!showImports)}
+                      onClick={() => toggleSection(file.name, 'imports')}
                       style={{ cursor: 'pointer', fontWeight: 'bold' }}
                     >
-                      {showImports ? '▼' : '▶'} Imports ({file.imports.length})
+                      {fileState.imports ? '▼' : '▶'} Imports ({file.imports.length})
                     </div>
 
-                    {showImports && (
+                    {fileState.imports && (
                       <ul style={{ margin: '0.25rem 0 0 1rem', padding: 0 }}>
                         {file.imports.map((imp) => (
                           <li key={imp}>{imp}</li>

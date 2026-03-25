@@ -1,4 +1,4 @@
-import { FileNode } from "./parseRepo";
+import { FileNode } from "../parser/parseRepo";
 
 export type GraphNode = {
   id: string;

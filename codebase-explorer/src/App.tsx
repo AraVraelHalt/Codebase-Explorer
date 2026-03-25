@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-
 import FileUpload from './components/FileUpload';
 import Sidebar from './components/Sidebar';
 import Graph from './components/Graph';
-import { buildDependencyGraph } from './parser/buildGraph';
-import { transformToReactFlow } from './parser/transformGraph';
+import { buildDependencyGraph } from './graph/buildGraph';
+import { transformToReactFlow } from './graph/transformGraph';
 import { FileNode } from './parser/parseRepo';
 import { calculateWeights } from './utils/metrics';
-
 import './App.css';
 
 function App() {
-  const [graphData, setGraphData] = useState<any> (null);
-  const [parsedFiles, setParsedFiles] = useState<FileNode[]> ([]);
-  const [activeNodeId, setActiveNodeId] = useState<string | null> (null);
-  const [weights, setWeights] = useState<Record<string, number>> ({});
+  const [graphData, setGraphData] = useState<any>(null);
+  const [parsedFiles, setParsedFiles] = useState<FileNode[]>([]);
+  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
+  const [weights, setWeights] = useState<Record<string, number>>({});
   const [showMetrics, setShowMetrics] = useState(false);
 
   const handleParsedFiles = (files: FileNode[]) => {
@@ -59,7 +57,6 @@ function App() {
           nodes={graphData.nodes} 
           edges={graphData.edges}
           activeNodeId={activeNodeId}
-          setActiveNodeId={setActiveNodeId}
           />
         )}
       </div>

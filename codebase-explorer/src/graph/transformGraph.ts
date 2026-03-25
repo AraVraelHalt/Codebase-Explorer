@@ -1,5 +1,4 @@
 import { MarkerType } from 'reactflow';
-
 import { Graph } from './buildGraph';
 import dagre from 'dagre';
 
